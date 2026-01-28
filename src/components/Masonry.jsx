@@ -242,8 +242,25 @@ const Masonry = ({
         }
     };
 
+    const gridHeight = useMemo(() => {
+        if (!width || !imagesReady || Object.keys(dimensions).length === 0) return 0;
+
+        const colHeights = new Array(columns).fill(0);
+        const columnWidth = width / columns;
+
+        items.forEach(child => {
+            const col = colHeights.indexOf(Math.min(...colHeights));
+            const imgDims = dimensions[child.id];
+            const aspectRatio = imgDims ? imgDims.height / imgDims.width : 1;
+            const height = columnWidth * aspectRatio;
+            colHeights[col] += height;
+        });
+
+        return Math.max(...colHeights);
+    }, [columns, items, width, imagesReady, dimensions]);
+
     return (
-        <div ref={containerRef} className="list">
+        <div ref={containerRef} className="list" style={{ height: gridHeight }}>
             {grid.map(item => {
                 return (
                     <div
