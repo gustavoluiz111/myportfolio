@@ -1,0 +1,88 @@
+/* GooeyNav.css */
+.gooey-nav-container {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gooey-nav-container ul {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.gooey-nav-container li a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+.gooey-nav-container li.active a {
+    opacity: 0;
+}
+
+.effect {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.effect.filter {
+    filter: url('#goo');
+}
+
+.effect.text {
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.particle {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: var(--color-1, #00f7ff);
+    border-radius: 50%;
+    --start-x: 0px;
+    --start-y: 0px;
+    --end-x: 0px;
+    --end-y: 0px;
+    animation: move var(--time) ease-out forwards;
+}
+
+@keyframes move {
+    0% {
+        transform: translate(var(--start-x), var(--start-y)) scale(1);
+    }
+
+    100% {
+        transform: translate(var(--end-x), var(--end-y)) scale(0);
+    }
+}
+
+/* Colors for particles */
+:root {
+    --color-1: #00f7ff;
+    --color-2: #9d00ff;
+    --color-3: #ff0077;
+    --color-4: #ffffff;
+}
