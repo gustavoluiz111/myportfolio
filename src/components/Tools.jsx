@@ -62,16 +62,18 @@ const Tools = () => {
         <section id="tools" className="relative py-20 px-6 overflow-hidden min-h-screen">
             {/* LiquidEther Background */}
             <div className="absolute inset-0 z-0">
-                <LiquidEther
-                    colors={['#5227FF', '#FF9FFC', '#B19EEF']}
-                    mouseForce={20}
-                    cursorSize={100}
-                    autoDemo={true}
-                    autoSpeed={0.5}
-                    autoIntensity={2.2}
-                    resolution={isMobile ? 0.25 : 0.5}
-                    style={{ width: '100%', height: '100%' }}
-                />
+                {!isMobile && (
+                    <LiquidEther
+                        colors={['#5227FF', '#FF9FFC', '#B19EEF']}
+                        mouseForce={20}
+                        cursorSize={100}
+                        autoDemo={true}
+                        autoSpeed={0.5}
+                        autoIntensity={2.2}
+                        resolution={0.5}
+                        style={{ width: '100%', height: '100%' }}
+                    />
+                )}
             </div>
 
             <div className="max-w-6xl mx-auto text-center relative z-10">
