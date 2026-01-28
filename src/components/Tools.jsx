@@ -56,7 +56,7 @@ const tools = [
 
 const Tools = () => {
     const [hoveredTool, setHoveredTool] = useState(null);
-    console.log('🛠️ Tools component rendering');
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     return (
         <section id="tools" className="relative py-20 px-6 overflow-hidden min-h-screen">
@@ -69,7 +69,7 @@ const Tools = () => {
                     autoDemo={true}
                     autoSpeed={0.5}
                     autoIntensity={2.2}
-                    resolution={0.5}
+                    resolution={isMobile ? 0.25 : 0.5}
                     style={{ width: '100%', height: '100%' }}
                 />
             </div>
