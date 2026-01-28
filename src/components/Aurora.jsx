@@ -11,13 +11,19 @@ const Aurora = ({ colorStops = ["#5227FF", "#ff6666", "#5227FF"], amplitude = 1,
         let animationFrameId;
         let time = 0;
 
+        let resizeTimeout;
         const resize = () => {
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
         };
 
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(resize, 100);
+        };
+
         resize();
-        window.addEventListener('resize', resize);
+        window.addEventListener('resize', handleResize);
 
         const animate = () => {
             time += 0.005;
@@ -42,8 +48,11 @@ const Aurora = ({ colorStops = ["#5227FF", "#ff6666", "#5227FF"], amplitude = 1,
             ctx.fillStyle = gradient;
 
             // Create wave effect
+            const isMobile = window.innerWidth < 768;
+            const step = isMobile ? 50 : 10;
+
             ctx.beginPath();
-            for (let x = 0; x < canvas.width; x += 10) {
+            for (let x = 0; x < canvas.width; x += step) {
                 const y = canvas.height / 2 + Math.sin(x * 0.01 + time) * 100 * amplitude;
                 if (x === 0) {
                     ctx.moveTo(x, y);
@@ -56,11 +65,13 @@ const Aurora = ({ colorStops = ["#5227FF", "#ff6666", "#5227FF"], amplitude = 1,
             ctx.closePath();
             ctx.fill();
 
-            // Add glow effect
-            ctx.globalAlpha = blend * 0.5;
-            ctx.filter = 'blur(50px)';
-            ctx.fill();
-            ctx.filter = 'none';
+            // Add glow effect - skipped on mobile for performance
+            if (!isMobile) {
+                ctx.globalAlpha = blend * 0.5;
+                ctx.filter = 'blur(50px)';
+                ctx.fill();
+                ctx.filter = 'none';
+            }
 
             animationFrameId = requestAnimationFrame(animate);
         };
@@ -68,7 +79,7 @@ const Aurora = ({ colorStops = ["#5227FF", "#ff6666", "#5227FF"], amplitude = 1,
         animate();
 
         return () => {
-            window.removeEventListener('resize', resize);
+            window.removeEventListener('resize', handleResize);
             cancelAnimationFrame(animationFrameId);
         };
     }, [colorStops, amplitude, blend]);

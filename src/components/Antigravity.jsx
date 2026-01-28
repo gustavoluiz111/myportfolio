@@ -171,8 +171,8 @@ const AntigravityInner = ({
 const Antigravity = props => {
     // Simple mobile detection
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    // Reduce count on mobile to 100, otherwise keep prop or default 300
-    const optimizedCount = isMobile ? 100 : (props.count || 300);
+    // Reduce count on mobile to 30, otherwise keep prop or default 300
+    const optimizedCount = isMobile ? 30 : (props.count || 300);
 
     return (
         <Canvas camera={{ position: [0, 0, 50], fov: 35 }}>

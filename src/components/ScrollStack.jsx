@@ -86,6 +86,9 @@ const ScrollStack = ({
 
         const endElementTop = endElement ? getElementOffset(endElement) : 0;
 
+        const isMobile = window.innerWidth < 768;
+        const effectiveBlurAmount = isMobile ? 0 : blurAmount;
+
         cardsRef.current.forEach((card, i) => {
             if (!card) return;
 
@@ -101,7 +104,7 @@ const ScrollStack = ({
             const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
 
             let blur = 0;
-            if (blurAmount) {
+            if (effectiveBlurAmount) {
                 let topCardIndex = 0;
                 for (let j = 0; j < cardsRef.current.length; j++) {
                     const jCardTop = getElementOffset(cardsRef.current[j]);
@@ -113,7 +116,7 @@ const ScrollStack = ({
 
                 if (i < topCardIndex) {
                     const depthInStack = topCardIndex - i;
-                    blur = Math.max(0, depthInStack * blurAmount);
+                    blur = Math.max(0, depthInStack * effectiveBlurAmount);
                 }
             }
 

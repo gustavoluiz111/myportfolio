@@ -35,18 +35,7 @@ const useMeasure = () => {
     return [ref, size];
 };
 
-const preloadImages = async urls => {
-    await Promise.all(
-        urls.map(
-            src =>
-                new Promise(resolve => {
-                    const img = new Image();
-                    img.src = src;
-                    img.onload = img.onerror = () => resolve();
-                })
-        )
-    );
-};
+
 
 const Masonry = ({
     items,

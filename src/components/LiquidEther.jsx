@@ -31,6 +31,31 @@ export default function LiquidEther({
     const isVisibleRef = useRef(true);
     const resizeRafRef = useRef(null);
 
+    const isMobile = useRef(typeof window !== 'undefined' && window.innerWidth < 768);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            isMobile.current = window.innerWidth < 768;
+        };
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        return (
+            <div
+                className={`${className} liquid-ether-mobile-fallback`}
+                style={{
+                    ...style,
+                    background: `linear-gradient(45deg, ${colors[0]}, ${colors[1] || colors[0]})`,
+                    opacity: 0.6,
+                    filter: 'blur(40px)',
+                    pointerEvents: 'none'
+                }}
+            />
+        );
+    }
+
     useEffect(() => {
         if (!mountRef.current) return;
 
@@ -85,7 +110,8 @@ export default function LiquidEther({
             }
             init(container) {
                 this.container = container;
-                this.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+                this.isMobile = window.innerWidth < this.breakpoint;
+                this.pixelRatio = this.isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
                 this.resize();
                 this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
                 this.renderer.autoClear = false;
@@ -740,9 +766,10 @@ export default function LiquidEther({
 
         class Simulation {
             constructor(options) {
+                const isMobile = window.innerWidth < 768;
                 this.options = {
-                    iterations_poisson: 32,
-                    iterations_viscous: 32,
+                    iterations_poisson: isMobile ? 12 : 32,
+                    iterations_viscous: isMobile ? 12 : 32,
                     mouse_force: 20,
                     resolution: 0.5,
                     cursor_size: 100,
@@ -750,9 +777,16 @@ export default function LiquidEther({
                     isBounce: false,
                     dt: 0.014,
                     isViscous: false,
-                    BFECC: true,
+                    BFECC: !isMobile, // Disable BFECC on mobile for extra performance
                     ...options
                 };
+                // Ensure mobile overrides even if options passed high values (unless explicitly handled, but here we just want safety)
+                if (isMobile) {
+                    this.options.iterations_poisson = Math.min(this.options.iterations_poisson, 12);
+                    this.options.iterations_viscous = Math.min(this.options.iterations_viscous, 12);
+                    this.options.BFECC = false;
+                }
+
                 this.fbos = {
                     vel_0: null,
                     vel_1: null,

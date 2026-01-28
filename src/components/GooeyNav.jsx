@@ -164,16 +164,18 @@ const GooeyNav = ({
             <span className="effect filter" ref={filterRef} />
             <span className="effect text" ref={textRef} />
 
-            {/* SVG Filter for Gooey Effect */}
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'none' }}>
-                <defs>
-                    <filter id="goo">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
-                        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -15" result="goo" />
-                        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-                    </filter>
-                </defs>
-            </svg>
+            {/* SVG Filter for Gooey Effect - disabled on mobile */}
+            {typeof window !== 'undefined' && window.innerWidth >= 768 && (
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'none' }}>
+                    <defs>
+                        <filter id="goo">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
+                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -15" result="goo" />
+                            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+                        </filter>
+                    </defs>
+                </svg>
+            )}
         </div>
     );
 };

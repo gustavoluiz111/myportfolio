@@ -86,3 +86,24 @@
     --color-3: #ff0077;
     --color-4: #ffffff;
 }
+
+@media (max-width: 767px) {
+    .effect.filter {
+        filter: none !important;
+    }
+
+    .particle {
+        display: none !important;
+        animation: none !important;
+    }
+
+    .gooey-nav-container {
+        bottom: 1rem;
+        padding: 0.25rem;
+    }
+
+    .gooey-nav-container li a {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}

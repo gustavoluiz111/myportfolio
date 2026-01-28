@@ -81,6 +81,8 @@ const ModeWrapper = memo(function ModeWrapper({
 
     const { scale, ior, thickness, anisotropy, chromaticAberration, ...extraMat } = modeProps;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
     return (
         <>
             {createPortal(children, scene)}
@@ -90,18 +92,28 @@ const ModeWrapper = memo(function ModeWrapper({
             </mesh>
             <mesh ref={ref} scale={scale ?? 0.15} rotation-x={Math.PI / 2} {...props}>
                 {geometryType === 'cylinder' ? (
-                    <cylinderGeometry args={[1, 1, 0.2, 64]} />
+                    <cylinderGeometry args={[1, 1, 0.2, isMobile ? 32 : 64]} />
                 ) : (
                     <boxGeometry args={[1, 1, 1]} />
                 )}
-                <MeshTransmissionMaterial
-                    buffer={buffer.texture}
-                    ior={ior ?? 1.15}
-                    thickness={thickness ?? 5}
-                    anisotropy={anisotropy ?? 0.01}
-                    chromaticAberration={chromaticAberration ?? 0.1}
-                    {...extraMat}
-                />
+                {isMobile ? (
+                    <meshPhysicalMaterial
+                        color={extraMat.color || "white"}
+                        transparent
+                        opacity={0.5}
+                        roughness={0.1}
+                        metalness={0.1}
+                    />
+                ) : (
+                    <MeshTransmissionMaterial
+                        buffer={buffer.texture}
+                        ior={ior ?? 1.15}
+                        thickness={thickness ?? 5}
+                        anisotropy={anisotropy ?? 0.01}
+                        chromaticAberration={chromaticAberration ?? 0.1}
+                        {...extraMat}
+                    />
+                )}
             </mesh>
         </>
     );

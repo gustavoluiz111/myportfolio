@@ -134,6 +134,7 @@ class Media {
         const texture = new Texture(this.gl, {
             generateMipmaps: true
         });
+        const isMobile = window.innerWidth < 768;
         this.program = new Program(this.gl, {
             depthTest: false,
             depthWrite: false,
@@ -149,7 +150,9 @@ class Media {
         void main() {
           vUv = uv;
           vec3 p = position;
-          p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
+          if (${!isMobile}) {
+            p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
+          }
           gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         }
       `,
@@ -321,9 +324,10 @@ class App {
         this.scene = new Transform();
     }
     createGeometry() {
+        const isMobile = window.innerWidth < 768;
         this.planeGeometry = new Plane(this.gl, {
-            heightSegments: 50,
-            widthSegments: 100
+            heightSegments: isMobile ? 10 : 50,
+            widthSegments: isMobile ? 20 : 100
         });
     }
     createMedias(items, bend = 1, textColor, borderRadius, font) {
