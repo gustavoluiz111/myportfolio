@@ -7,7 +7,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
+      <Router basename={import.meta.env.DEV ? '/' : '/myportfolio/'}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<TestPage />} />
