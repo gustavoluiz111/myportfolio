@@ -14,7 +14,8 @@ const DesignsGallery = () => {
             return {
                 id: `design-${id}`,
                 // Updated path to reflect public/designs location and double-space filename pattern
-                img: `/designs/design  (${id}).png`,
+                // Prepend BASE_URL to handle GitHub Pages subdirectory
+                img: `${import.meta.env.BASE_URL}designs/design  (${id}).png`,
                 url: '#' // Placeholder link
             };
         });

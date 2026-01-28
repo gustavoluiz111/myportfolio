@@ -3,11 +3,11 @@ import Antigravity from './Antigravity';
 
 const Hero = () => {
     const logos = [
-        '/assets/logo/2.png',
-        '/assets/logo/3.png',
-        '/assets/logo/4.png',
-        '/assets/logo/5.png',
-        '/assets/logo/6.png'
+        `${import.meta.env.BASE_URL}assets/logo/2.png`,
+        `${import.meta.env.BASE_URL}assets/logo/3.png`,
+        `${import.meta.env.BASE_URL}assets/logo/4.png`,
+        `${import.meta.env.BASE_URL}assets/logo/5.png`,
+        `${import.meta.env.BASE_URL}assets/logo/6.png`
     ];
 
     return (
@@ -25,7 +25,7 @@ const Hero = () => {
                     className="flex justify-center mb-6"
                 >
                     <motion.img
-                        src="/assets/logo/2.png"
+                        src={`${import.meta.env.BASE_URL}assets/logo/2.png`}
                         alt="LG Web Studio Logo"
                         className="h-24 md:h-32 object-contain hover:scale-105 transition-transform duration-300 invert"
                         initial={{ opacity: 0 }}
